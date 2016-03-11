@@ -1,23 +1,25 @@
-# Postgresql
-docker run --name postgres -e POSTGRES_USER=owncloud -e POSTGRES_PASSWORD=PassWord -e POSTGRES_DB=owncloud -d postgres
+# Mysql
+```
+docker run -d --name mysql \ 
+  -v /srv/docker/owncloud/mysql:/var/lib/mysql \ 
+  -e MYSQL_ROOT_PASSWORD=test \
+  -e MYSQL_DATABASE=owncloud \ 
+  -e MYSQL_USER=owncloud \ 
+  -e MYSQL_PASSWORD=owncloud \ 
+  mysql:5
+```
+
+
 
 # Owncloud
 ```
 docker run --name=owncloud -h owncloud.example.com \
-  -p 80:80 -p 443:443 \
-  --link postgres:db \
-  -e 'DB_NAME=owncloud' \
-  -e 'DB_USER=owncloud' \
-  -e 'DB_PASS=PassWord' \
-  -e 'ADMIN_USER=admin' \
-  -e 'ADMIN_PASS=admin' \
-  -e 'TIMEZONE=Europe/Berlin' \
-  -v /srv/docker/owncloud/config:/var/www/owncloud/config \
-  -v /srv/docker/owncloud/apps:/var/www/owncloud/apps \
-  -v /srv/docker/owncloud/data:/var/www/owncloud/data \
-  -v /srv/docker/owncloud/owncloud.crt:/etc/ssl/certs/owncloud.crt \
-  -v /srv/docker/owncloud/owncloud.key:/etc/ssl/private/owncloud.key \
-  pschmitt/owncloud
+  -p 80:80 \
+  --link mysql:mysql \
+  -v /srv/docker/owncloud/config:/var/www/html/config \
+  -v /srv/docker/owncloud/apps:/var/www/html/apps \
+  -v /srv/docker/owncloud/data:/var/www/html/data \
+  owncloud:9
 ```
 
 # Create self signed certificate
