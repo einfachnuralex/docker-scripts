@@ -2,7 +2,7 @@
 docker run --name postgres -e POSTGRES_USER=owncloud -e POSTGRES_PASSWORD=PassWord -e POSTGRES_DB=owncloud -d postgres
 
 # Owncloud
-'''
+´´´
 docker run --name=owncloud -h owncloud.example.com \
   -p 80:80 -p 443:443 \
   --link postgres:db \
@@ -18,7 +18,7 @@ docker run --name=owncloud -h owncloud.example.com \
   -v /srv/docker/owncloud/owncloud.crt:/etc/ssl/certs/owncloud.crt \
   -v /srv/docker/owncloud/owncloud.key:/etc/ssl/private/owncloud.key \
   pschmitt/owncloud
-'''
+´´´
 
 # Create self signed certificate
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mysitename.key -out mysitename.crt
