@@ -1,0 +1,45 @@
+nginx-proxy:
+  image: jwilder/nginx-proxy
+  container_name: nginx-proxy
+  ports:
+    - 80:80
+    - 443:443
+  volumes:
+    - /mnt/nextcloud/certs:/etc/nginx/certs
+    - /var/run/docker.sock:/tmp/docker.sock:ro
+
+nextcloud:
+  image: wonderfall/nextcloud:10.0
+  links:
+    - db_nextcloud:db_nextcloud
+  environment:
+    - UID=1000
+    - GID=1000
+    - UPLOAD_MAX_SIZE=10G
+    - APC_SHM_SIZE=128M
+    - OPCACHE_MEM_SIZE=128
+    - CRON_PERIOD=15m
+    - VIRTUAL_PROTO=http
+    - VIRTUAL_HOST=foo.bar.com
+    - TZ=Europe/Berlin
+    - ADMIN_USER=admin
+    - ADMIN_PASSWORD=admin
+    - DB_TYPE=mysql
+    - DB_NAME=nextcloud
+    - DB_USER=nextcloud
+    - DB_PASSWORD=supersecretpassword
+    - DB_HOST=db_nextcloud
+  volumes:
+    - /mnt/nextcloud/data:/data
+    - /mnt/nextcloud/config:/config
+    - /mnt/nextcloud/apps:/apps2
+
+db_nextcloud:
+  image: mariadb:10
+  volumes:
+    - /mnt/nextcloud/db:/var/lib/mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=supersecretpassword
+    - MYSQL_DATABASE=nextcloud
+    - MYSQL_USER=nextcloud
+    - MYSQL_PASSWORD=supersecretpassword
