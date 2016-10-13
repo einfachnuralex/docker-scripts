@@ -17,6 +17,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mysitename.key -out 
 cd /mnt/nextcloud/certs
 ln -sf mysitename.key default.key
 ln -sf mysitename.crt default.crt
+```
 
 # Nextcloud
 Modify domain and passwords in docker-compose.yml and
